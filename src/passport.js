@@ -27,6 +27,7 @@ passport.use(
       clientID: config.auth.facebook.id,
       clientSecret: config.auth.facebook.secret,
       callbackURL: '/login/facebook/return',
+      graphAPIVersion: 'v7.0',
       profileFields: [
         'displayName',
         'name',
