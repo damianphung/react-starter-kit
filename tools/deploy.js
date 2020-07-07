@@ -16,19 +16,20 @@ import run from './run';
 // GitHub Pages
 const remote = {
   name: 'github',
-  url: 'https://github.com/<user>/<repo>.git',
+  url: 'https://github.com/damianphung/react-starter-kit.git',
   branch: 'gh-pages',
-  website: 'https://<user>.github.io/<repo>/',
+  website: 'https://damianphung.github.io/react-starter-kit/',
   static: true,
 };
-
 // Heroku
-// const remote = {
-//   name: 'heroku',
-//   url: 'https://git.heroku.com/<app>.git',
-//   branch: 'master',
-//   website: 'https://<app>.herokuapp.com',
-// };
+/*
+ const remote = {
+   name: 'heroku',
+   url: 'https://git.heroku.com/react-test-site.git',
+   branch: 'master',
+   website: 'https://react-test-site.herokuapp.com'
+ };
+*/
 
 // Azure Web Apps
 // const remote = {
@@ -46,6 +47,20 @@ const options = { cwd: path.resolve(__dirname, '../build') };
 async function deploy() {
   // Initialize a new repository
   await makeDir('build');
+  process.argv.push('--release');
+  if (remote.static) process.argv.push('--static');
+  await run(require('./build').default); // eslint-disable-line global-require
+  if (process.argv.includes('--static')) {
+    await cleanDir('build/*', {
+      nosort: true,
+      dot: true,
+      ignore: ['build/.git', 'build/public'],
+    });
+    await moveDir('build/public', 'build');
+  }
+  
+  return 1;
+
   await spawn('git', ['init', '--quiet'], options);
 
   // Changing a remote's URL
