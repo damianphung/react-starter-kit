@@ -19,7 +19,7 @@ const remote = {
   url: 'https://github.com/damianphung/react-starter-kit.git',
   branch: 'gh-pages',
   website: 'https://damianphung.github.io/react-starter-kit/',
-  static: true,
+  static: false,
 };
 // Heroku
 /*
@@ -58,7 +58,7 @@ async function deploy() {
     });
     await moveDir('build/public', 'build');
   }
-  
+
   return 1;
 
   await spawn('git', ['init', '--quiet'], options);
